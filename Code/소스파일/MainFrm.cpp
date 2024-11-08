@@ -1,9 +1,10 @@
-
-// MainFrm.cpp : CMainFrame Å¬·¡½ºÀÇ ±¸Çö
+ï»¿
+// MainFrm.cpp: CMainFrame í´ë˜ìŠ¤ì˜ êµ¬í˜„
 //
 
-#include "stdafx.h"
-#include "ChaseungyunR1.h"
+#include "pch.h"
+#include "framework.h"
+#include "ChaSeungYunR01.h"
 
 #include "MainFrm.h"
 
@@ -26,31 +27,21 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
-	ON_COMMAND(IDM_NIGHT, &CMainFrame::OnNight)
-	ON_COMMAND(IDM_DAY, &CMainFrame::OnDay)
-	ON_COMMAND(IDM_BASIC, &CMainFrame::OnBasic)
-	ON_COMMAND(IDM_STAR, &CMainFrame::OnStar)
-	ON_COMMAND(IDM_MOON, &CMainFrame::OnMoon)
-	ON_COMMAND(IDM_SUN, &CMainFrame::OnSun)
-	ON_COMMAND(IDM_TURNOFF, &CMainFrame::OnTurnoff)
-	ON_COMMAND(IDM_TURNON, &CMainFrame::OnTurnon)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // »óÅÂ ÁÙ Ç¥½Ã±â
+	ID_SEPARATOR,           // ìƒíƒœ ì¤„ í‘œì‹œê¸°
 	ID_INDICATOR_CAPS,
 	ID_INDICATOR_NUM,
 	ID_INDICATOR_SCRL,
 };
 
-// CMainFrame »ı¼º/¼Ò¸ê
+// CMainFrame ìƒì„±/ì†Œë©¸
 
-CMainFrame::CMainFrame()
+CMainFrame::CMainFrame() noexcept
 {
-	m_nColor =0;
-	m_nShape =0;
-	// TODO: ¿©±â¿¡ ¸â¹ö ÃÊ±âÈ­ ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ë©¤ë²„ ì´ˆê¸°í™” ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 }
 
@@ -64,25 +55,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	BOOL bNameValid;
-	// º¸°üµÈ °ª¿¡ µû¶ó ºñÁÖ¾ó °ü¸®ÀÚ ¹× ½ºÅ¸ÀÏÀ» ¼³Á¤ÇÕ´Ï´Ù.
-	OnApplicationLook(theApp.m_nAppLook);
 
 	if (!m_wndMenuBar.Create(this))
 	{
-		TRACE0("¸Ş´º ¸ğÀ½À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return -1;      // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("ë©”ë‰´ ëª¨ìŒì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return -1;      // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
 	m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-	// ¸Ş´º ¸ğÀ½À» È°¼ºÈ­ÇØµµ Æ÷Ä¿½º°¡ ÀÌµ¿ÇÏÁö ¾Ê°Ô ÇÕ´Ï´Ù.
+	// ë©”ë‰´ ëª¨ìŒì„ í™œì„±í™”í•´ë„ í¬ì»¤ìŠ¤ê°€ ì´ë™í•˜ì§€ ì•Šê²Œ í•©ë‹ˆë‹¤.
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
 	{
-		TRACE0("µµ±¸ ¸ğÀ½À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return -1;      // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("ë„êµ¬ ëª¨ìŒì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return -1;      // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
 	CString strToolBarName;
@@ -95,17 +84,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
-	// »ç¿ëÀÚ Á¤ÀÇ µµ±¸ ¸ğÀ½ ÀÛ¾÷À» Çã¿ëÇÕ´Ï´Ù.
-	InitUserToolbars(NULL, uiFirstUserToolBarId, uiLastUserToolBarId);
+	// ì‚¬ìš©ì ì •ì˜ ë„êµ¬ ëª¨ìŒ ì‘ì—…ì„ í—ˆìš©í•©ë‹ˆë‹¤.
+	InitUserToolbars(nullptr, uiFirstUserToolBarId, uiLastUserToolBarId);
 
 	if (!m_wndStatusBar.Create(this))
 	{
-		TRACE0("»óÅÂ Ç¥½ÃÁÙÀ» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return -1;      // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("ìƒíƒœ í‘œì‹œì¤„ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return -1;      // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
-	// TODO: µµ±¸ ¸ğÀ½ ¹× ¸Ş´º ¸ğÀ½À» µµÅ·ÇÒ ¼ö ¾ø°Ô ÇÏ·Á¸é ÀÌ ´Ù¼¸ ÁÙÀ» »èÁ¦ÇÏ½Ê½Ã¿À.
+	// TODO: ë„êµ¬ ëª¨ìŒ ë° ë©”ë‰´ ëª¨ìŒì„ ë„í‚¹í•  ìˆ˜ ì—†ê²Œ í•˜ë ¤ë©´ ì´ ë‹¤ì„¯ ì¤„ì„ ì‚­ì œí•˜ì‹­ì‹œì˜¤.
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
@@ -113,49 +102,51 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wndToolBar);
 
 
-	// Visual Studio 2005 ½ºÅ¸ÀÏ µµÅ· Ã¢ µ¿ÀÛÀ» È°¼ºÈ­ÇÕ´Ï´Ù.
+	// Visual Studio 2005 ìŠ¤íƒ€ì¼ ë„í‚¹ ì°½ ë™ì‘ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
 	CDockingManager::SetDockingMode(DT_SMART);
-	// Visual Studio 2005 ½ºÅ¸ÀÏ µµÅ· Ã¢ ÀÚµ¿ ¼û±è µ¿ÀÛÀ» È°¼ºÈ­ÇÕ´Ï´Ù.
+	// Visual Studio 2005 ìŠ¤íƒ€ì¼ ë„í‚¹ ì°½ ìë™ ìˆ¨ê¹€ ë™ì‘ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
 	EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
-	// ¸Ş´º Ç×¸ñ ÀÌ¹ÌÁö¸¦ ·ÎµåÇÕ´Ï´Ù(Ç¥ÁØ µµ±¸ ¸ğÀ½¿¡ ¾øÀ½).
+	// ë©”ë‰´ í•­ëª© ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•©ë‹ˆë‹¤(í‘œì¤€ ë„êµ¬ ëª¨ìŒì— ì—†ìŒ).
 	CMFCToolBar::AddToolBarForImageCollection(IDR_MENU_IMAGES, theApp.m_bHiColorIcons ? IDB_MENU_IMAGES_24 : 0);
 
-	// µµÅ· Ã¢À» ¸¸µì´Ï´Ù.
+	// ë„í‚¹ ì°½ì„ ë§Œë“­ë‹ˆë‹¤.
 	if (!CreateDockingWindows())
 	{
-		TRACE0("µµÅ· Ã¢À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
+		TRACE0("ë„í‚¹ ì°½ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
 		return -1;
 	}
 
 	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndFileView);
-	CDockablePane* pTabbedBar = NULL;
+	CDockablePane* pTabbedBar = nullptr;
 	m_wndClassView.AttachToTabWnd(&m_wndFileView, DM_SHOW, TRUE, &pTabbedBar);
 	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndOutput);
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
 
+	// ë³´ê´€ëœ ê°’ì— ë”°ë¼ ë¹„ì£¼ì–¼ ê´€ë¦¬ì ë° ìŠ¤íƒ€ì¼ì„ ì„¤ì •í•©ë‹ˆë‹¤.
+	OnApplicationLook(theApp.m_nAppLook);
 
-	// µµ±¸ ¸ğÀ½ ¹× µµÅ· Ã¢ ¸Ş´º ¹Ù²Ù±â¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
+	// ë„êµ¬ ëª¨ìŒ ë° ë„í‚¹ ì°½ ë©”ë‰´ ë°”ê¾¸ê¸°ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤.
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
-	// ºü¸¥(<Alt> Å°¸¦ ´©¸¥ Ã¤ ²ø±â) µµ±¸ ¸ğÀ½ »ç¿ëÀÚ ÁöÁ¤À» È°¼ºÈ­ÇÕ´Ï´Ù.
+	// ë¹ ë¥¸(<Alt> í‚¤ë¥¼ ëˆ„ë¥¸ ì±„ ëŒê¸°) ë„êµ¬ ëª¨ìŒ ì‚¬ìš©ì ì§€ì •ì„ í™œì„±í™”í•©ë‹ˆë‹¤.
 	CMFCToolBar::EnableQuickCustomization();
 
-	if (CMFCToolBar::GetUserImages() == NULL)
+	if (CMFCToolBar::GetUserImages() == nullptr)
 	{
-		// »ç¿ëÀÚ Á¤ÀÇ µµ±¸ ¸ğÀ½ ÀÌ¹ÌÁö¸¦ ·ÎµåÇÕ´Ï´Ù.
+		// ì‚¬ìš©ì ì •ì˜ ë„êµ¬ ëª¨ìŒ ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•©ë‹ˆë‹¤.
 		if (m_UserImages.Load(_T(".\\UserImages.bmp")))
 		{
 			CMFCToolBar::SetUserImages(&m_UserImages);
 		}
 	}
 
-	// ¸Ş´º °³ÀÎ ¼³Á¤À» È°¼ºÈ­ÇÕ´Ï´Ù(°¡Àå ÃÖ±Ù¿¡ »ç¿ëÇÑ ¸í·É).
-	// TODO: »ç¿ëÀÚÀÇ ±âº» ¸í·ÉÀ» Á¤ÀÇÇÏ¿© °¢ Ç®´Ù¿î ¸Ş´º¿¡ ÇÏ³ª ÀÌ»óÀÇ ±âº» ¸í·ÉÀ» Æ÷ÇÔ½ÃÅµ´Ï´Ù.
+	// ë©”ë‰´ ê°œì¸ ì„¤ì •ì„ í™œì„±í™”í•©ë‹ˆë‹¤(ê°€ì¥ ìµœê·¼ì— ì‚¬ìš©í•œ ëª…ë ¹).
+	// TODO: ì‚¬ìš©ìì˜ ê¸°ë³¸ ëª…ë ¹ì„ ì •ì˜í•˜ì—¬ ê° í’€ë‹¤ìš´ ë©”ë‰´ì— í•˜ë‚˜ ì´ìƒì˜ ê¸°ë³¸ ëª…ë ¹ì„ í¬í•¨ì‹œí‚µë‹ˆë‹¤.
 	CList<UINT, UINT> lstBasicCommands;
 
 	lstBasicCommands.AddTail(ID_FILE_NEW);
@@ -190,8 +181,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
-	// TODO: CREATESTRUCT cs¸¦ ¼öÁ¤ÇÏ¿© ¿©±â¿¡¼­
-	//  Window Å¬·¡½º ¶Ç´Â ½ºÅ¸ÀÏÀ» ¼öÁ¤ÇÕ´Ï´Ù.
+	// TODO: CREATESTRUCT csë¥¼ ìˆ˜ì •í•˜ì—¬ ì—¬ê¸°ì—ì„œ
+	//  Window í´ë˜ìŠ¤ ë˜ëŠ” ìŠ¤íƒ€ì¼ì„ ìˆ˜ì •í•©ë‹ˆë‹¤.
 
 	return TRUE;
 }
@@ -200,44 +191,44 @@ BOOL CMainFrame::CreateDockingWindows()
 {
 	BOOL bNameValid;
 
-	// Å¬·¡½º ºä¸¦ ¸¸µì´Ï´Ù.
+	// í´ë˜ìŠ¤ ë·°ë¥¼ ë§Œë“­ë‹ˆë‹¤.
 	CString strClassView;
 	bNameValid = strClassView.LoadString(IDS_CLASS_VIEW);
 	ASSERT(bNameValid);
 	if (!m_wndClassView.Create(strClassView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_CLASSVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
-		TRACE0("Å¬·¡½º ºä Ã¢À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return FALSE; // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("í´ë˜ìŠ¤ ë·° ì°½ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return FALSE; // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
-	// ÆÄÀÏ ºä¸¦ ¸¸µì´Ï´Ù.
+	// íŒŒì¼ ë·°ë¥¼ ë§Œë“­ë‹ˆë‹¤.
 	CString strFileView;
 	bNameValid = strFileView.LoadString(IDS_FILE_VIEW);
 	ASSERT(bNameValid);
 	if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
 	{
-		TRACE0("ÆÄÀÏ ºä Ã¢À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return FALSE; // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("íŒŒì¼ ë·° ì°½ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return FALSE; // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
-	// Ãâ·Â Ã¢À» ¸¸µì´Ï´Ù.
+	// ì¶œë ¥ ì°½ì„ ë§Œë“­ë‹ˆë‹¤.
 	CString strOutputWnd;
 	bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
 	ASSERT(bNameValid);
 	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
 	{
-		TRACE0("Ãâ·Â Ã¢À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return FALSE; // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("ì¶œë ¥ ì°½ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return FALSE; // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
-	// ¼Ó¼º Ã¢À» ¸¸µì´Ï´Ù.
+	// ì†ì„± ì°½ì„ ë§Œë“­ë‹ˆë‹¤.
 	CString strPropertiesWnd;
 	bNameValid = strPropertiesWnd.LoadString(IDS_PROPERTIES_WND);
 	ASSERT(bNameValid);
 	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
 	{
-		TRACE0("¼Ó¼º Ã¢À» ¸¸µéÁö ¸øÇß½À´Ï´Ù.\n");
-		return FALSE; // ¸¸µéÁö ¸øÇß½À´Ï´Ù.
+		TRACE0("ì†ì„± ì°½ì„ ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.\n");
+		return FALSE; // ë§Œë“¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.
 	}
 
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
@@ -260,7 +251,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 
 }
 
-// CMainFrame Áø´Ü
+// CMainFrame ì§„ë‹¨
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -275,11 +266,11 @@ void CMainFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CMainFrame ¸Ş½ÃÁö Ã³¸®±â
+// CMainFrame ë©”ì‹œì§€ ì²˜ë¦¬ê¸°
 
 void CMainFrame::OnViewCustomize()
 {
-	CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* ¸Ş´º¸¦ °Ë»öÇÕ´Ï´Ù. */);
+	CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* ë©”ë‰´ë¥¼ ê²€ìƒ‰í•©ë‹ˆë‹¤. */);
 	pDlgCust->EnableUserDefinedToolbars();
 	pDlgCust->Create();
 }
@@ -369,7 +360,8 @@ void CMainFrame::OnApplicationLook(UINT id)
 		CDockingManager::SetDockingMode(DT_SMART);
 	}
 
-	RedrawWindow(NULL, NULL, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
+	m_wndOutput.UpdateFonts();
+	RedrawWindow(nullptr, nullptr, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
 
 	theApp.WriteInt(_T("ApplicationLook"), theApp.m_nAppLook);
 }
@@ -379,9 +371,10 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
+
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
-	// ±âº» Å¬·¡½º°¡ ½ÇÁ¦ ÀÛ¾÷À» ¼öÇàÇÕ´Ï´Ù.
+	// ê¸°ë³¸ í´ë˜ìŠ¤ê°€ ì‹¤ì œ ì‘ì—…ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤.
 
 	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
 	{
@@ -389,7 +382,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	}
 
 
-	// ¸ğµç »ç¿ëÀÚ µµ±¸ ¸ğÀ½¿¡ »ç¿ëÀÚ ÁöÁ¤ ´ÜÃß¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
+	// ëª¨ë“  ì‚¬ìš©ì ë„êµ¬ ëª¨ìŒì— ì‚¬ìš©ì ì§€ì • ë‹¨ì¶”ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤.
 	BOOL bNameValid;
 	CString strCustomize;
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
@@ -398,7 +391,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	for (int i = 0; i < iMaxUserToolbars; i ++)
 	{
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
-		if (pUserToolbar != NULL)
+		if (pUserToolbar != nullptr)
 		{
 			pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 		}
@@ -413,63 +406,3 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
 }
-
-
-void CMainFrame::OnNight()
-{
-	m_nColor =1;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CMainFrame::OnDay()
-{
-
-	m_nColor =2;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CMainFrame::OnBasic()
-{
-	m_nColor =3;
-	m_nShape =4;
-	m_nTurn =3;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CMainFrame::OnStar()
-{
-	m_nShape =1;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CMainFrame::OnMoon()
-{
-	m_nShape =2;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CMainFrame::OnSun()
-{
-	m_nShape =3;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-void CMainFrame::OnTurnon()
-{
-	m_nTurn =1;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-void CMainFrame::OnTurnoff()
-{
-	m_nTurn =2;
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-

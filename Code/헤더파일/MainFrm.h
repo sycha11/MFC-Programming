@@ -1,5 +1,5 @@
-
-// MainFrm.h : CMainFrame Å¬·¡½ºÀÇ ÀÎÅÍÆäÀÌ½º
+ï»¿
+// MainFrm.h: CMainFrame í´ë˜ìŠ¤ì˜ ì¸í„°í˜ì´ìŠ¤
 //
 
 #pragma once
@@ -11,24 +11,22 @@
 class CMainFrame : public CFrameWndEx
 {
 	
-protected: // serialization¿¡¼­¸¸ ¸¸µé¾îÁı´Ï´Ù.
-	CMainFrame();
+protected: // serializationì—ì„œë§Œ ë§Œë“¤ì–´ì§‘ë‹ˆë‹¤.
+	CMainFrame() noexcept;
 	DECLARE_DYNCREATE(CMainFrame)
 
-// Æ¯¼ºÀÔ´Ï´Ù.
-public:
-	int m_nColor;
-	int m_nShape;
-	int m_nTurn;
-// ÀÛ¾÷ÀÔ´Ï´Ù.
+// íŠ¹ì„±ì…ë‹ˆë‹¤.
 public:
 
-// ÀçÁ¤ÀÇÀÔ´Ï´Ù.
+// ì‘ì—…ì…ë‹ˆë‹¤.
+public:
+
+// ì¬ì •ì˜ì…ë‹ˆë‹¤.
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
+	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr);
 
-// ±¸ÇöÀÔ´Ï´Ù.
+// êµ¬í˜„ì…ë‹ˆë‹¤.
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -36,7 +34,7 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // ÄÁÆ®·Ñ ¸ğÀ½ÀÌ Æ÷ÇÔµÈ ¸â¹öÀÔ´Ï´Ù.
+protected:  // ì»¨íŠ¸ë¡¤ ëª¨ìŒì´ í¬í•¨ëœ ë©¤ë²„ì…ë‹ˆë‹¤.
 	CMFCMenuBar       m_wndMenuBar;
 	CMFCToolBar       m_wndToolBar;
 	CMFCStatusBar     m_wndStatusBar;
@@ -46,7 +44,7 @@ protected:  // ÄÁÆ®·Ñ ¸ğÀ½ÀÌ Æ÷ÇÔµÈ ¸â¹öÀÔ´Ï´Ù.
 	COutputWnd        m_wndOutput;
 	CPropertiesWnd    m_wndProperties;
 
-// »ı¼ºµÈ ¸Ş½ÃÁö ¸Ê ÇÔ¼ö
+// ìƒì„±ëœ ë©”ì‹œì§€ ë§µ í•¨ìˆ˜
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewCustomize();
@@ -58,15 +56,6 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
-public:
-	afx_msg void OnNight();
-	afx_msg void OnDay();
-	afx_msg void OnBasic();
-	afx_msg void OnStar();
-	afx_msg void OnMoon();
-	afx_msg void OnSun();
-	afx_msg void OnTurnoff();
-	afx_msg void OnTurnon();
 };
 
 

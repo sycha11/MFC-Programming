@@ -1,5 +1,6 @@
-
-#include "stdafx.h"
+ï»¿
+#include "pch.h"
+#include "framework.h"
 #include "ViewTree.h"
 
 #ifdef _DEBUG
@@ -11,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CViewTree
 
-CViewTree::CViewTree()
+CViewTree::CViewTree() noexcept
 {
 }
 
@@ -23,16 +24,16 @@ BEGIN_MESSAGE_MAP(CViewTree, CTreeCtrl)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CViewTree ¸Þ½ÃÁö Ã³¸®±â
+// CViewTree ë©”ì‹œì§€ ì²˜ë¦¬ê¸°
 
 BOOL CViewTree::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
 	BOOL bRes = CTreeCtrl::OnNotify(wParam, lParam, pResult);
 
 	NMHDR* pNMHDR = (NMHDR*)lParam;
-	ASSERT(pNMHDR != NULL);
+	ASSERT(pNMHDR != nullptr);
 
-	if (pNMHDR && pNMHDR->code == TTN_SHOW && GetToolTips() != NULL)
+	if (pNMHDR && pNMHDR->code == TTN_SHOW && GetToolTips() != nullptr)
 	{
 		GetToolTips()->SetWindowPos(&wndTop, -1, -1, -1, -1, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOSIZE);
 	}

@@ -1,24 +1,24 @@
-
-// ChaseungyunR1Doc.h : CChaseungyunR1Doc Å¬·¡½ºÀÇ ÀÎÅÍÆäÀÌ½º
+ï»¿
+// ChaSeungYunR01Doc.h: CChaSeungYunR01Doc í´ë˜ìŠ¤ì˜ ì¸í„°í˜ì´ìŠ¤
 //
 
 
 #pragma once
 
 
-class CChaseungyunR1Doc : public CDocument
+class CChaSeungYunR01Doc : public CDocument
 {
-protected: // serialization¿¡¼­¸¸ ¸¸µé¾îÁı´Ï´Ù.
-	CChaseungyunR1Doc();
-	DECLARE_DYNCREATE(CChaseungyunR1Doc)
+protected: // serializationì—ì„œë§Œ ë§Œë“¤ì–´ì§‘ë‹ˆë‹¤.
+	CChaSeungYunR01Doc() noexcept;
+	DECLARE_DYNCREATE(CChaSeungYunR01Doc)
 
-// Æ¯¼ºÀÔ´Ï´Ù.
+// íŠ¹ì„±ì…ë‹ˆë‹¤.
 public:
 
-// ÀÛ¾÷ÀÔ´Ï´Ù.
+// ì‘ì—…ì…ë‹ˆë‹¤.
 public:
-	
-// ÀçÁ¤ÀÇÀÔ´Ï´Ù.
+
+// ì¬ì •ì˜ì…ë‹ˆë‹¤.
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
@@ -27,9 +27,9 @@ public:
 	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDLERS
 
-// ±¸ÇöÀÔ´Ï´Ù.
+// êµ¬í˜„ì…ë‹ˆë‹¤.
 public:
-	virtual ~CChaseungyunR1Doc();
+	virtual ~CChaSeungYunR01Doc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -37,12 +37,12 @@ public:
 
 protected:
 
-// »ı¼ºµÈ ¸Ş½ÃÁö ¸Ê ÇÔ¼ö
+// ìƒì„±ëœ ë©”ì‹œì§€ ë§µ í•¨ìˆ˜
 protected:
 	DECLARE_MESSAGE_MAP()
 
 #ifdef SHARED_HANDLERS
-	// °Ë»ö Ã³¸®±â¿¡ ´ëÇÑ °Ë»ö ÄÜÅÙÃ÷¸¦ ¼³Á¤ÇÏ´Â µµ¿ì¹Ì ÇÔ¼ö
+	// ê²€ìƒ‰ ì²˜ë¦¬ê¸°ì— ëŒ€í•œ ê²€ìƒ‰ ì½˜í…ì¸ ë¥¼ ì„¤ì •í•˜ëŠ” ë„ìš°ë¯¸ í•¨ìˆ˜
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 };

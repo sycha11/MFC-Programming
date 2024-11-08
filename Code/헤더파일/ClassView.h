@@ -1,4 +1,4 @@
-
+ï»¿
 #pragma once
 
 #include "ViewTree.h"
@@ -16,7 +16,7 @@ class CClassToolBar : public CMFCToolBar
 class CClassView : public CDockablePane
 {
 public:
-	CClassView();
+	CClassView() noexcept;
 	virtual ~CClassView();
 
 	void AdjustLayout();
@@ -30,7 +30,7 @@ protected:
 
 	void FillClassView();
 
-// ÀçÁ¤ÀÇÀÔ´Ï´Ù.
+// ì¬ì •ì˜ì…ë‹ˆë‹¤.
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
